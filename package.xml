@@ -5,15 +5,21 @@
 		<packagedescription><![CDATA[Dieses Plugin bietet einen Platz um Skizzen und Entwürfe Wiki-artig festzuhalten.]]></packagedescription>
 		<isunique>1</isunique>
 		<version>1.0.0 alpha 1</version>
-		<date>2011-08-10</date>
+		<date>2011-08-13</date>
 	</packageinformation>
 	
 	<authorinformation>
 		<author><![CDATA[Nachteule`]]></author>
 	</authorinformation>
 	
+	<requiredpackages>
+		<requiredpackage>nachteule.wcf.template.plugin.icons</requiredpackage>
+	</requiredpackages>
+	
 	<instructions type="install">
 		<sql>install.sql</sql>
 		<files>files.tar</files>
+		<templates>templates.tar</templates>
+		<languages languagecode="de">de.xml</language>
 	</instructions>
 </package>

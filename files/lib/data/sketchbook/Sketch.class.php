@@ -91,8 +91,12 @@ class Sketch extends DatabaseObject {
 			foreach ($parts as $child)
 				$current = &$current[$child];
 			
-			foreach ($current as $child)
-				$this->childs[$child] = self::$cache['titles'][$this->name.'/'.$child];
+			foreach ($current as $child => $childs) {
+				$this->childs[$child] = array(
+					'title' => self::$cache['titles'][$this->name.'/'.$child],
+					'childs' => count($childs)
+				);
+			}
 		}
 		
 		return $this->childs;

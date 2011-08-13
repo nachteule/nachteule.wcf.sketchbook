@@ -38,11 +38,37 @@
 	
 	<div class="border infoBox">
 		<div class="container-1 infoBoxAuthors">
-			<h3>{lang}wcf.sketchbook.sketch.infoBoxAuthors.headline{/lang}</h3>
-			<p class="smallFont">
-				{implode from=$sketch->getAuthors() item=author}<a href="index.php?page=User&amp;userID={@$author.userID}{@SID_ARG_2ND}">{$author.username}</a> ({@$author.time|shorttime}){/implode}
-			</p>
+			<div class="containerIcon">
+				<img src="{icons}sketchAuthorsM.png,membersM.png{/icons}" alt="" />
+			</div>
+			<div class="containerContent">
+				<h3>{lang}wcf.sketchbook.sketch.infoBoxAuthors.headline{/lang}</h3>
+				<p class="smallFont">
+					{implode from=$sketch->getAuthors() item=author}<a href="index.php?page=User&amp;userID={@$author.userID}{@SID_ARG_2ND}">{$author.username}</a> ({@$author.time|shorttime}){/implode}
+				</p>
+			</div>
 		</div>
+		{if $sketch->getChilds()|count}
+		<div class="container-2 infoBoxChilds">
+			<div class="containerIcon">
+				<img src="{icons}sketchesM.png,messageM.png{/icons}" alt="" />
+			</div>
+			<div class="containerContent">
+				<h3>{lang}wcf.sketchbook.sketch.infoBoxChilds.headline{/lang}</h3>
+				<p class="smallFont">
+					{implode from=$sketch->getChilds() key=name item=child}
+						{if $child.childs}
+							<img src="{icons}sketchesS.png,messages.png{/icons}" alt="" />
+						{else}
+							<img src="{icons}sketchS.png,messages.png{/icons}" alt="" />
+						{/if}
+						
+						<a href="index.php?page=Sketch&amp;name={$name}{@SID_ARG_2ND}">{$child.title}</a>
+					{/implode}
+				</p>
+			</div>
+		</div>
+		{/if}
 	</div>
 </div>
 
