@@ -28,6 +28,9 @@ class Sketch extends DatabaseObject {
 			$row = WCF::getDB()->getFirstRow($sql);
 		}
 		
+		if (empty($row['name']))
+			$this->name = $name;
+		
 		return parent::__construct($row);
 	}
 	

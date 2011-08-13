@@ -10,7 +10,6 @@ require_once(WCF_DIR.'lib/data/sketchbook/ViewableSketch.class.php');
 class SketchPage extends AbstractPage {
 	public $templateName = 'sketch';
 	public $name;
-	public $sketchID;
 	public $sketch;
 	
 	/**
@@ -19,16 +18,11 @@ class SketchPage extends AbstractPage {
 	public function readParameters() {
 		parent::readParameters();
 		
-		if (!empty($_GET['sketchID']))
-			$this->sketchID = intval($_GET['sketchID']);
-		
 		if (!empty($_GET['name']))
 			$this->name = StringUtil::trim($_GET['name']);
 		
-		$this->sketch = new ViewableSketch($this->sketchID, null, $this->name);
-		if (!$this->sketch->sketchID)
-			$this->templateName = 'sketchNotFound';
-		else
+		$this->sketch = new ViewableSketch(null, null, $this->name);
+		if ($this->sketch->sketchID)
 			$this->sketch->increaseViews();
 	}
 	
