@@ -8,6 +8,7 @@ require_once(WCF_DIR.'lib/data/DatabaseObject.class.php');
  */
 class Sketch extends DatabaseObject {
 	public $authors;
+	public $breadcrumbs;
 	public $flags = array();
 	
 	public function __construct($sketchID, $row = null, $name = null) {
@@ -53,6 +54,29 @@ class Sketch extends DatabaseObject {
 		}
 		
 		return $this->authors;
+	}
+	
+	public function getBreadcrumbs() {
+		if ($this->breadcrumbs === null) {
+			$this->breadcrumbs = array();
+			
+			$parents = array();
+			$parts = explode('/', escapeString($this->name));
+			$count = count($parts);
+			if ($count > 1) {
+				for ($i = 1; $i <= $count; $i++)
+					$parents[] = implode('/', array_slice($parts, 0, $i));
+			
+				$sql = "SELECT name, title
+						FROM wcf".WCF_N."_sketch
+						WHERE name IN ('".$parents."')";
+				$result = WCF::getDB()->sendQuery($sql);
+				while ($row = WCF::getDB()->fetchArray($result))
+					$this->breadcrumbs[$row['name']] = $row['title'];
+			}
+		}
+		
+		return $this->breadcrumbs;
 	}
 	
 	public function isFlag($flag) {
