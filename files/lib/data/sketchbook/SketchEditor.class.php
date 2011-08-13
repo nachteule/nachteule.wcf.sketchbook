@@ -20,13 +20,13 @@ class SketchEditor extends Sketch {
 	 * @param	boolean	$enableBBCodes
 	 * @param	integer	$views
 	 */
-	public static function create($name, $title, $content, $flags = '', $enableTPLCode = false, $enableSmilies = false, $enableHTML = true, $enableBBCodes = true, $views = 0) {
+	public static function create($name, $title, $content, $flags = array(), $enableTPLCode = false, $enableSmilies = false, $enableHTML = true, $enableBBCodes = true, $views = 0) {
 		$sql = "INSERT INTO wcf".WCF_N."_sketch
 					(name, title, content, flags, enableTPLCode, enableSmilies, enableHTML, enableBBCodes, views)
 				VALUES ('".escapeString($name)."',
 				'".escapeString($title)."',
 				'".escapeString($content)."',
-				'".escapeString($flags)."',
+				'".escapeString(SketchEditor::buildFlagString($this->flags))."',
 				".($enableTPLCode ? 1 : 0).",
 				".($enableSmilies ? 1 : 0).",
 				".($enableHTML ? 1 : 0).",
@@ -55,7 +55,7 @@ class SketchEditor extends Sketch {
 					name = '".escapeString($name)."',
 					title = '".escapeString($title)."',
 					content = '".escapeString($content)."',
-					flags = '".escapeString($flags)."',
+					flags = '".escapeString(SketchEditor::buildFlagString($flags))."',
 					enableTPLCode = ".($enableTPLCode ? 1 : 0).",
 					enableSmilies = ".($enableSmilies ? 1 : 0).",
 					enableHTML = ".($enableHTML ? 1 : 0).",
@@ -72,6 +72,25 @@ class SketchEditor extends Sketch {
 					(".$this->sketchID.", ".$userID.", ".$time.")
 				ON DUPLICATE KEY UPDATE time = ".$time;
 		WCF::getDB()->sendQuery($sql);
+	}
+	
+	public function flag($flags) {
+		$this->flags = array_merge($this->flags, $flags);
+		
+		$sql = "UPDATE wcf".WCF_N."_sketch SET
+					flags = '".escapeString(SketchEditor::buildFlagString($this->flags))."'
+				WHERE sketchID = ".$this->sketchID;
+		WCF::getDB()->sendQuery($sql);
+	}
+	
+	public static function buildFlagString($flags) {
+		$string = '';
+		foreach ($flags as $flag => $value) {
+			if (!$value) continue;
+			if (!empty($string)) $string .= ', ';
+			$string .= $flag.($value !== true ? '='.$value : '');
+		}
+		return $string;
 	}
 	
 	/**

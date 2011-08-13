@@ -8,6 +8,7 @@ require_once(WCF_DIR.'lib/data/DatabaseObject.class.php');
  */
 class Sketch extends DatabaseObject {
 	public $authors;
+	public $flags = array();
 	
 	public function __construct($sketchID, $row = null, $name = null) {
 		if (!empty($sketchID)) {
@@ -27,6 +28,15 @@ class Sketch extends DatabaseObject {
 		return parent::__construct($row);
 	}
 	
+	protected function handleData($data) {
+		parent::handleData($data);
+		$flags = ArrayUtil::trim(explode(',', $this->data['flags']));
+		foreach ($flags as $flag) {
+			$flag = ArrayUtil::trim(explode('=', $flag, 2));
+			$this->flags[$flag[0]] = (isset($flag[1]) ? $flag[1] : true);
+		}
+	}
+	
 	public function getAuthors() {
 		if ($this->authors === null) {
 			$this->authors = array();
@@ -43,5 +53,12 @@ class Sketch extends DatabaseObject {
 		}
 		
 		return $this->authors;
+	}
+	
+	public function isFlag($flag) {
+		if (!isset($this->flags[$flag]))
+			return false;
+		
+		return $this->flags[$flag];
 	}
 }
