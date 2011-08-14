@@ -12,8 +12,7 @@ class ViewableSketch extends Sketch {
 	public $formattedContent;
 	
 	public function getFormattedContent() {
-		if ($this->enableTPLCode)
-			$this->formattedContent = WCF::getTPL()->fetchString($this->content);
+		$this->formattedContent = WCF::getLanguage()->getDynamicVariable('wcf.sketchbook.sketchContents.'.SketchbookUtil::nameToLangVar($this->name));
 		
 		EventHandler::fireAction($this, 'shouldParseMessage');
 		

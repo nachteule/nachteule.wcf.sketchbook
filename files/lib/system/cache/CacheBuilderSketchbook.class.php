@@ -12,17 +12,14 @@ class CacheBuilderSketchbook implements CacheBuilder {
 	 */
 	public function getData($cacheResource) {
 		$sketchbook = array(
-			'structure' => array(),
-			'titles' => array()
+			'structure' => array()
 		);
 		
-		$sql = "SELECT name, title
+		$sql = "SELECT name
 				FROM wcf".WCF_N."_sketch
 				ORDER BY name ASC";
 		$result = WCF::getDB()->sendQuery($sql);
 		while ($row = WCF::getDB()->fetchArray($result)) {
-			$sketchbook['titles'][$row['name']] = $row['title'];
-			
 			$parts = explode('/', $row['name']);
 			
 			$current = &$sketchbook['structure'];
@@ -32,8 +29,6 @@ class CacheBuilderSketchbook implements CacheBuilder {
 				
 				$current = &$current[$child];
 			}
-			
-			$current['title'] = $row['title'];
 		}
 		
 		return $sketchbook;

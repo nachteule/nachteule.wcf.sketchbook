@@ -14,7 +14,7 @@ class SketchbookUtil {
 	
 	public static function getTitle($name, $html = false) {
 		$item = 'wcf.sketchbook.sketchTitles.'.self::nameToLangVar($name);
-		$value = WCF::getLanguage()->get($item);
+		$value = WCF::getLanguage()->getDynamicVariable($item);
 		$new = false;
 		
 		if ($value == $title) { 

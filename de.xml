@@ -10,5 +10,6 @@
 		<item name="wcf.sketchbook.sketch.infoBoxChilds.headline"><![CDATA[<a href="index.php?page=Sketchbook&amp;name={@$sketch->name}{@SID_ARG_2ND}">Unterseiten</a>]]></item>
 	</category>
 	
-	<category name="wcf.sketchbook.sketches"></category>
+	<category name="wcf.sketchbook.sketchTitles"></category>
+	<category name="wcf.sketchbook.sketchContents"></category>
 </language>
