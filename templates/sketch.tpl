@@ -2,6 +2,7 @@
 <head>
 	<title>{implode from=$sketch->getParents() item=parent glue=" - "}{$parent|sketchTitle:false}{/implode} - {lang}{PAGE_TITLE}{/lang}</title>
 	{include file="headInclude" sandbox=false}
+	<link rel="stylesheet" type="text/css" media="screen" href="{@RELATIVE_WCF_DIR}style/sketchbook.css" />
 </head>
 <body{if $templateName|isset} id="tpl{$templateName|ucfirst}"{/if}>
 {include file="header" sandbox=false}
@@ -91,7 +92,7 @@
 							<img src="{icons}sketchS.png,messages.png{/icons}" alt="" />
 						{/if}
 					
-						<a href="index.php?page=Sketch&amp;name={$child.name}{@SID_ARG_2ND}">{$child.name|sketchTitle}</a>
+						<a href="index.php?page=Sketch&amp;name={$child.name}{@SID_ARG_2ND}">{@$child.name|sketchTitle}</a>
 					{/implode}
 				</p>
 			</div>

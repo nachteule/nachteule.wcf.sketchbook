@@ -2,6 +2,7 @@
 <head>
 	<title>{if !$sketch->isRoot()}{implode from=$sketch->getParents() item=parent glue=" - "}{$parent|sketchTitle:false}{/implode} - {/if}{lang}wcf.sketchbook.list{/lang} - {lang}{PAGE_TITLE}{/lang}</title>
 	{include file="headInclude" sandbox=false}
+	<link rel="stylesheet" type="text/css" media="screen" href="{@RELATIVE_WCF_DIR}style/sketchbook.css" />
 </head>
 <body{if $templateName|isset} id="tpl{$templateName|ucfirst}"{/if}>
 {include file="header" sandbox=false}
