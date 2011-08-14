@@ -11,6 +11,7 @@ class Sketch extends DatabaseObject {
 	public $authors;
 	public $breadcrumbs;
 	public $childs;
+	public $allChilds;
 	public $flags = array();
 	
 	public function __construct($sketchID, $row = null, $name = null) {
@@ -89,10 +90,12 @@ class Sketch extends DatabaseObject {
 		if ($this->childs === null) {
 			$this->childs = array();
 			
-			$parts = explode('/', $this->name)
-			$current = &self::$cache['structure'];
-			foreach ($parts as $child)
-				$current = &$current[$child];
+			//if (!$this->isRoot()) {
+				$parts = explode('/', $this->name)
+				$current = &self::$cache['structure'];
+				foreach ($parts as $child)
+					$current = &$current[$child];
+			//}
 			
 			foreach ($current as $child => $childs) {
 				$this->childs[$child] = array(
@@ -105,11 +108,37 @@ class Sketch extends DatabaseObject {
 		return $this->childs;
 	}
 	
+	public function getAllChilds() {
+		if ($this->allChilds === null) {
+			$this->allChilds = array();
+			
+			$current = &self::$cache['structure'];
+			
+			if (!$this->isRoot()) {
+				$parts = explode('/', $this->name)
+				foreach ($parts as $child)
+					$current = &$current[$child];
+			}
+			
+			$this->allChilds = $current;
+		}
+		
+		return $this->allChilds;
+	}
+	
 	public function isFlag($flag) {
 		if (!isset($this->flags[$flag]))
 			return false;
 		
 		return $this->flags[$flag];
+	}
+	
+	public function isRoot() {
+		return $this->name == '';
+	}
+	
+	public function exists() {
+		return ($this->sketchID ? true : false);
 	}
 	
 	public static function loadCache() {

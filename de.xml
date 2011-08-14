@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <language xmlns="http://www.woltlab.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.woltlab.com http://www.woltlab.com/XSD/language.xsd" languagecode="de">
 	<category name="wcf.sketchbook">
+		<item name="wcf.sketchbook.list"><![CDATA[Sketchbook]]></item>
+		<item name="wcf.sketchbook.list.description"><![CDATA[Unterseiten von {$sketch->title}]]></item>
+		<item name="wcf.sketchbook.sketch.add"><![CDATA[Sketch anlegen]]></item>
+		<item name="wcf.sketchbook.sketch.add.info"><![CDATA[Dieser Sketch existiert noch nicht.]]></item>
+		<item name="wcf.sketchbook.sketch.edit"><![CDATA[Sketch bearbeiten]]></item>
 		<item name="wcf.sketchbook.sketch.infoBoxAuthors.headline"><![CDATA[Autoren]]></item>
-		<item name="wcf.sketchbook.sketch.infoBoxChilds.headline"><![CDATA[Unterseiten]]></item>
+		<item name="wcf.sketchbook.sketch.infoBoxChilds.headline"><![CDATA[<a href="index.php?page=Sketchbook&amp;name={@$sketch->name}{@SID_ARG_2ND}">Unterseiten</a>]]></item>
 	</category>
 </language>
