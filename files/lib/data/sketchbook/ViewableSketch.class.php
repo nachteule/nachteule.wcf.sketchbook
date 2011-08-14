@@ -10,7 +10,6 @@ require_once(WCF_DIR.'lib/data/message/bbcode/MessageParser.class.php');
  */
 class ViewableSketch extends Sketch {
 	public $formattedContent;
-	public $title;
 	
 	public function getFormattedContent() {
 		if ($this->enableTPLCode)
@@ -29,16 +28,6 @@ class ViewableSketch extends Sketch {
 		EventHandler::fireAction($this, 'didParseMessage');
 		
 		return $this->formattedContent;
-	}
-	
-	public function getTitle() {
-		if ($this->title === null) {
-			$title = array_values($this->getBreadcrumbs());
-			krsort($title);
-			$this->title = implode(' - ', $title);
-		}
-		
-		return $this->title;
 	}
 	
 	public function increaseViews() {

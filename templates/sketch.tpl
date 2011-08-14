@@ -1,6 +1,6 @@
 {include file="documentHeader"}
 <head>
-	<title>{implode from=$sketch->getParents() item=parent glue=" - "}{$parent|sketchTitle}{/implode} - {lang}{PAGE_TITLE}{/lang}</title>
+	<title>{implode from=$sketch->getParents() item=parent glue=" - "}{$parent|sketchTitle:false}{/implode} - {lang}{PAGE_TITLE}{/lang}</title>
 	{include file="headInclude" sandbox=false}
 </head>
 <body{if $templateName|isset} id="tpl{$templateName|ucfirst}"{/if}>
@@ -9,13 +9,13 @@
 <div id="main">
 	
 	<ul class="breadCrumbs">
-		<li><a href="index.php?page=Index{@SID_ARG_2ND}"><img src="{icon}index.tpl{/icon}" alt="" /> <span>{lang}{PAGE_TITLE}{/lang}</span></a></li>
+		<li><a href="index.php?page=Index{@SID_ARG_2ND}"><img src="{icon}indexS.png{/icon}" alt="" /> <span>{lang}{PAGE_TITLE}{/lang}</span></a></li>
 		
 		{foreach from=$sketch->getParents(false) item=name}
 			<li>
 				<a href="index.php?page=Sketch&amp;name={$name}{@SID_ARG_2ND}">
 					<img src="{icons}sketchS.png,messageS.png{/icons}" alt="" />
-					<span>{$name|sketchTitle}</span>
+					{@$name|sketchTitle}
 				</a>
 			</li>
 		{/foreach}
@@ -24,7 +24,7 @@
 	<div class="mainHeadline">
 		<img src="{icons}sketchL.png,messageL.png{/icons}" alt="" />
 		<div class="headlineContainer">
-			<h2>{$sketch->name|sketchTitle}</h2>
+			<h2>{@$sketch->name|sketchTitle}</h2>
 		</div>
 	</div>
 	

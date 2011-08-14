@@ -12,14 +12,20 @@ class SketchbookUtil {
 		return str_replace('/', '.', $name);
 	}
 	
-	public static function getTitle($name) {
+	public static function getTitle($name, $html = false) {
 		$item = 'wcf.sketchbook.sketchTitles.'.self::nameToLangVar($name);
 		$value = WCF::getLanguage()->get($item);
+		$new = false;
 		
-		if ($value == $title)
-			return StringUtil::substring($title, StringUtil::lastIndexOf($title, '.'));
+		if ($value == $title) { 
+			$value = StringUtil::substring($title, StringUtil::lastIndexOf($title, '.'));
+			$new = true;
+		}
 		
-		return $value;
+		if ($html)
+			return '<span class="sketch'.($new ? ' sketchNew' : '').'">'.StringUtil::encodeHTML($title).'</span>';
+		
+		return $title;
 	}
 	
 	public static function getParentsByName($name) {

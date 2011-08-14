@@ -11,6 +11,10 @@ class TemplatePluginModifierSketchTitle implements TemplatePluginModifier {
 	 * @see TemplatePluginModifier::execute()
 	 */
 	public function execute($tagArgs, Template $tplObj) {
-		return ShoutboxUtil::getTitle($tagArgs[0]);
+		$html = true;
+		if (isset($tagArs[1]))
+			$html = (bool) $tagArgs[1];
+		
+		return ShoutboxUtil::getTitle($tagArgs[0], $html);
 	}
 }
