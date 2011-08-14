@@ -1,6 +1,6 @@
 {include file="documentHeader"}
 <head>
-	<title>{if !$sketch->isRoot()}{$sketch->getTitle()} - {/if}{lang}wcf.sketchbook.list{/lang} - {lang}{PAGE_TITLE}{/lang}</title>
+	<title>{if !$sketch->isRoot()}{implode from=$sketch->getParents() item=parent glue=" - "}{$parent|sketchTitle}{/implode} - {/if}{lang}wcf.sketchbook.list{/lang} - {lang}{PAGE_TITLE}{/lang}</title>
 	{include file="headInclude" sandbox=false}
 </head>
 <body{if $templateName|isset} id="tpl{$templateName|ucfirst}"{/if}>
@@ -11,11 +11,11 @@
 	<ul class="breadCrumbs">
 		<li><a href="index.php?page=Index{@SID_ARG_2ND}"><img src="{icon}index.tpl{/icon}" alt="" /> <span>{lang}{PAGE_TITLE}{/lang}</span></a></li>
 		
-		{foreach from=$sketch->getBreadcrumbs() key=name item=title}
+		{foreach from=$sketch->getParents(false) item=name}
 			<li>
-				<a href="index.php?page=Sketchbook&amp;name={$name}{@SID_ARG_2ND}">
+				<a href="index.php?page=Sketch&amp;name={$name}{@SID_ARG_2ND}">
 					<img src="{icons}sketchS.png,messageS.png{/icons}" alt="" />
-					<span>{$title}</span>
+					<span>{$name|sketchTitle}</span>
 				</a>
 			</li>
 		{/foreach}
@@ -33,7 +33,7 @@
 	
 	<div class="border content" class="sketches">
 		<div class="container-1">
-			{include file="sketchListRecursive" sketches=$sketch->getAllChilds() parent=$sketch->name titles=$titles}
+			{include file="sketchListRecursive" sketches=$sketch->getAllChilds() parent=$sketch->name}
 		</div>
 	</div>
 </div>

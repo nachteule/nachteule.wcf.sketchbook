@@ -3,9 +3,9 @@
 		<li>
 			{if $parent == ''}
 			{capture assign=$fullName}{if $fullName !== ""}{@$fullName}/{/if}{@$name}{/capture}
-			{$titles[$fullName]}
+			{$fullName|sketchTitle}
 			{if $childs|count}
-				{include file="sketchListRecursive" sketches=$childs parent=$fullName titles=$titles}
+				{include file="sketchListRecursive" sketches=$childs parent=$fullName}
 			{/if}
 		</li>
 	{/foreach}
