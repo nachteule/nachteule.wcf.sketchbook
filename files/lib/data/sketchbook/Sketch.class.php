@@ -9,12 +9,11 @@ require_once(WCF_DIR.'lib/data/DatabaseObject.class.php');
 class Sketch extends DatabaseObject {
 	public static $cache;
 	public $authors;
-	public $breadcrumbs;
 	public $childs;
 	public $allChilds;
 	public $flags = array();
 	
-	public function __construct($sketchID, $row = null, $name = null) {
+	public function __construct($sketchID, $row = null, $name = null, $languageID = WCF::getLanguage()->getLanguageID()) {
 		if (!empty($sketchID)) {
 			$sql = "SELECT *
 					FROM wcf".WCF_N."_sketch
@@ -25,7 +24,8 @@ class Sketch extends DatabaseObject {
 		if (!empty($name)) {
 			$sql = "SELECT *
 					FROM wcf".WCF_N."_sketch
-					WHERE name = '".escapeString($name)."'";
+					WHERE name = '".escapeString($name)."'
+						AND languageID = ".$languageID;
 			$row = WCF::getDB()->getFirstRow($sql);
 		}
 		
@@ -37,11 +37,13 @@ class Sketch extends DatabaseObject {
 	
 	protected function handleData($data) {
 		parent::handleData($data);
-		$flags = ArrayUtil::trim(explode(',', $this->data['flags']));
-		foreach ($flags as $flag) {
-			$flag = ArrayUtil::trim(explode('=', $flag, 2));
-			$this->flags[$flag[0]] = (isset($flag[1]) ? $flag[1] : true);
-		}
+		$this-flags = SketchbookUtil::parseFlags($this->data['flags']);
+	}
+	
+	public function getParents($reverse = true) {
+		$parents = SketchbookUtil::getParentsByName($this->name);
+		if (!$reverse) krsort($parents);
+		return $parents;
 	}
 	
 	public function getAuthors() {
@@ -62,44 +64,14 @@ class Sketch extends DatabaseObject {
 		return $this->authors;
 	}
 	
-	public function getBreadcrumbs() {
-		if ($this->breadcrumbs === null) {
-			$this->breadcrumbs = array();
-			
-			if (self::$cache === null)
-				self::loadCache();
-			
-			$parts = explode('/', $this->name);
-			$count = count($parts);
-			if ($count > 1) {
-				for ($i = 1; $i <= $count; $i++) {
-					$parent = implode('/', array_slice($parts, 0, $i));
-					
-					if (isset(self::$cache['titles'][$parent]))
-						$this->breadcrumbs[$parent] = self::$cache['titles'][$parent];
-					else
-						$this->breadcrumbs[$parent] = $parts[$i];
-				}
-			}
-		}
-		
-		return $this->breadcrumbs;
-	}
-	
 	public function getChilds() {
 		if ($this->childs === null) {
 			$this->childs = array();
 			
-			//if (!$this->isRoot()) {
-				$parts = explode('/', $this->name)
-				$current = &self::$cache['structure'];
-				foreach ($parts as $child)
-					$current = &$current[$child];
-			//}
-			
+			$current = $this->getAllChilds();
 			foreach ($current as $child => $childs) {
-				$this->childs[$child] = array(
-					'title' => self::$cache['titles'][$this->name.'/'.$child],
+				$this->childs[] = array(
+					'name' => ($this->isRoot() ? '' : $this->name.'/').$child,
 					'childs' => count($childs)
 				);
 			}

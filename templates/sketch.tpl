@@ -1,6 +1,6 @@
 {include file="documentHeader"}
 <head>
-	<title>{$sketch->getTitle()} - {lang}{PAGE_TITLE}{/lang}</title>
+	<title>{implode from=$sketch->getParents() item=parent glue=" - "}{$parent|sketchTitle}{/implode} - {lang}{PAGE_TITLE}{/lang}</title>
 	{include file="headInclude" sandbox=false}
 </head>
 <body{if $templateName|isset} id="tpl{$templateName|ucfirst}"{/if}>
@@ -11,11 +11,11 @@
 	<ul class="breadCrumbs">
 		<li><a href="index.php?page=Index{@SID_ARG_2ND}"><img src="{icon}index.tpl{/icon}" alt="" /> <span>{lang}{PAGE_TITLE}{/lang}</span></a></li>
 		
-		{foreach from=$sketch->getBreadcrumbs() key=name item=title}
+		{foreach from=$sketch->getParents(false) item=name}
 			<li>
 				<a href="index.php?page=Sketch&amp;name={$name}{@SID_ARG_2ND}">
 					<img src="{icons}sketchS.png,messageS.png{/icons}" alt="" />
-					<span>{$title}</span>
+					<span>{$name|sketchTitle}</span>
 				</a>
 			</li>
 		{/foreach}
@@ -24,11 +24,7 @@
 	<div class="mainHeadline">
 		<img src="{icons}sketchL.png,messageL.png{/icons}" alt="" />
 		<div class="headlineContainer">
-			{if $sketch->exists()}
-				<h2>{$sketch->title}</h2>
-			{else}
-				<h2>{lang}wcf.sketchbook.sketch.add{/lang}</h2>
-			{/if}
+			<h2>{$sketch->name|sketchTitle}</h2>
 		</div>
 	</div>
 	
@@ -88,14 +84,14 @@
 			<div class="containerContent">
 				<h3>{lang}wcf.sketchbook.sketch.infoBoxChilds.headline{/lang}</h3>
 				<p class="smallFont">
-					{implode from=$sketch->getChilds() key=name item=child}
+					{implode from=$sketch->getChilds() item=child}
 						{if $child.childs}
 							<img src="{icons}sketchesS.png,messages.png{/icons}" alt="" />
 						{else}
 							<img src="{icons}sketchS.png,messages.png{/icons}" alt="" />
 						{/if}
 					
-						<a href="index.php?page=Sketch&amp;name={$name}{@SID_ARG_2ND}">{$child.title}</a>
+						<a href="index.php?page=Sketch&amp;name={$child.name}{@SID_ARG_2ND}">{$child.name|sketchTitle}</a>
 					{/implode}
 				</p>
 			</div>
